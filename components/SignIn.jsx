@@ -1,28 +1,37 @@
 import React, { useState } from "react";
+import { signInWithPopup, signOut } from "firebase/auth";
+import { db, auth, GoogleProvider } from "../src/firebase";
 import {
-  signInWithPopup,
-  createUserWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
-import { auth, GoogleProvider } from "../src/firebase";
+  addDoc,
+  setDoc,
+  collection,
+  doc,
+  serverTimestamp,
+} from "firebase/firestore";
 
-const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
-  console.log(auth?.currentUser?.email);
-
+const SignIn = ({ setIsAuth }) => {
   const signInWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, GoogleProvider);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+      // sign in with google
+      const result = await signInWithPopup(auth, GoogleProvider);
+      cookies.set("auth-token", result.user.refreshToken);
+      const currentUserId = auth.currentUser.uid;
+      console.log(currentUserId);
+      localStorage.setItem("key", JSON.stringify(currentUserId));
+      setIsAuth(true);
 
-  const signIn = async () => {
-    try {
-      await createUserWithEmailAndPassword(auth, email, pass);
+      // storing the user in firebase database
+      const newUser = {
+        username: auth.currentUser.displayName,
+        email: auth.currentUser.email,
+        photoURL: auth.currentUser.photoURL,
+        // lastSignedIn: serverTimestamp,
+      };
+
+      await setDoc(doc(db, "users", currentUserId), newUser);
     } catch (error) {
       console.error(error);
     }
@@ -37,33 +46,6 @@ const SignIn = () => {
   };
   return (
     <div className="flex items-center flex-col justify-center h-[100vh]">
-      <form className="flex flex-col justify-center gap-3 px-[22px] ">
-        <input
-          className="outline-none border-2 border-primarycolor-500 p-2 rounded-lg"
-          placeholder="Your Email"
-          type="email"
-          name="email"
-          id="email"
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-        />
-        <input
-          className="outline-none border-2 border-primarycolor-500 p-2 rounded-lg"
-          placeholder="Password"
-          type="password"
-          name="password"
-          id="pass"
-          onChange={(e) => setPass(e.target.value)}
-          value={pass}
-        />
-        <button
-          type="submit"
-          className="border-none bg-primarycolor-500 px-2 py-2 rounded-md text-white"
-          onClick={signIn}
-        >
-          SignIn
-        </button>
-      </form>
       <div className="flex items-center gap-2 mt-3">
         <button
           type="submit"
