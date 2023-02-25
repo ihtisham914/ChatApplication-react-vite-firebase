@@ -7,21 +7,26 @@ import {
   serverTimestamp,
   onSnapshot,
   query,
+  orderBy,
   where,
 } from "firebase/firestore";
 
-const Chat = () => {
+const Chat = ({ setActive }) => {
   const [msg, setMsg] = useState("");
   const messagesRef = collection(db, "messages");
   const [messages, setMessages] = useState([]);
-  const [user, setuser] = useState(users[1]);
 
-  const currentUserId = JSON.parse(localStorage.getItem("key"));
+  const activeUser = JSON.parse(localStorage.getItem("key"));
+  const reciever = JSON.parse(localStorage.getItem("rec"));
+  console.log(reciever.email);
+  console.log(activeUser.email);
 
+  // console.log(reciever.email);
   useEffect(() => {
     const queryMessages = query(
       messagesRef,
-      where("senderId", "==", currentUserId)
+      where("senderEmail", "==", activeUser.email),
+      where("recieverEmail", "==", reciever.email)
     );
     onSnapshot(queryMessages, (snapshot) => {
       let messages = [];
@@ -29,6 +34,7 @@ const Chat = () => {
         messages.push({ ...doc.data(), id: doc.id });
       });
       setMessages(messages);
+      console.log(messages);
     });
   }, []);
 
@@ -38,8 +44,8 @@ const Chat = () => {
     const newMsg = {
       text: msg,
       sentAt: serverTimestamp(),
-      senderId: currentUserId,
-      recieverId: 1,
+      senderEmail: activeUser.email,
+      recieverEmail: reciever.email,
     };
     setMsg("");
     await addDoc(messagesRef, newMsg);
@@ -57,9 +63,16 @@ const Chat = () => {
     <div className="h-[80vh] relative">
       <header className="flex items-center justify-between px-6 bg-primarycolor-500 h-[80px] w-[100%] rounded-b-3xl fixed top-0 z-50">
         <div className="flex items-center gap-2">
-          <img src="/user.png" height={50} width={50} alt="userIcon" />
+          <span onClick={() => setActive(false)}>&larr;</span>
+          <img
+            src={reciever.photoURL}
+            height={50}
+            width={50}
+            alt="userIcon"
+            className="rounded-full"
+          />
           <h2 className="text-white text-[20px] font-bold tracking-wider">
-            {user.name}
+            {reciever.username}
           </h2>
         </div>
         <img src="/call.svg" height={30} width={30} alt="callIcon" />
@@ -67,7 +80,7 @@ const Chat = () => {
       <div className="flex justify-center gap-2 flex-col px-[22px] pt-24 pb-20">
         {messages.map((message, index) => (
           <div key={index}>
-            {message.senderId === currentUserId ? (
+            {message.senderEmail === activeUser.email ? (
               <div className="bg-primarycolor-400 text-white text-[14px] px-[18px] py-4 w-[80%] rounded-2xl ml-[68px]">
                 {message.text}
               </div>

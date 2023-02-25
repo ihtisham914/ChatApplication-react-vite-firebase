@@ -13,14 +13,19 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
 const SignIn = ({ setIsAuth }) => {
+  const userRef = collection(db, "users");
   const signInWithGoogle = async () => {
     try {
       // sign in with google
       const result = await signInWithPopup(auth, GoogleProvider);
       cookies.set("auth-token", result.user.refreshToken);
-      const currentUserId = auth.currentUser.uid;
-      console.log(currentUserId);
-      localStorage.setItem("key", JSON.stringify(currentUserId));
+
+      const activeUser = {
+        username: auth.currentUser.displayName,
+        email: auth.currentUser.email,
+        photoURL: auth.currentUser.photoURL,
+      };
+      localStorage.setItem("key", JSON.stringify(activeUser));
       setIsAuth(true);
 
       // storing the user in firebase database
@@ -31,7 +36,7 @@ const SignIn = ({ setIsAuth }) => {
         // lastSignedIn: serverTimestamp,
       };
 
-      await setDoc(doc(db, "users", currentUserId), newUser);
+      await addDoc(userRef, newUser);
     } catch (error) {
       console.error(error);
     }
