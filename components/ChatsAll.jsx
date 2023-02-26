@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { users } from "../appData/users";
 import { db, auth } from "../src/firebase";
 import {
   addDoc,
@@ -10,7 +9,7 @@ import {
   where,
 } from "firebase/firestore";
 
-const chatsAll = ({ setActive }) => {
+const chatsAll = ({ setActive, activeChat }) => {
   const [chats, setChats] = useState([]);
   const chatsRef = collection(db, "users");
   const activeUser = JSON.parse(localStorage.getItem("key"));
@@ -28,18 +27,25 @@ const chatsAll = ({ setActive }) => {
   }, []);
 
   return (
-    <div className="h-[80vh] relative">
-      <header className="flex items-center justify-between px-6 bg-primarycolor-500 h-[80px] w-[100%] rounded-b-3xl fixed top-0 z-50">
-        <span className="text-white text-[28px] font-bold tracking-wider">
+    <div className="h-[100vh] w-[100%] sm:w-[25vw] md:w-[25vw] lg:w-[25vw] relative border-r-2 border-slate-500">
+      <header className="flex items-center justify-between px-6 bg-primarycolor-500 w-[100%] sm:w-[25vw] md:w-[25vw] lg:w-[25vw] h-[70px] rounded-b-3xl sm:rounded-none md:rounded-none lg:rounded-none sm:rounded-bl-3xl md:rounded-bl-3xl lg:rounded-bl-3xl fixed top-0 z-50 border-r-2 border-slate-500">
+        <span className="text-white text-[24px] font-bold tracking-wider">
           Messages
         </span>
-        <img src="/search.svg" height={30} width={30} />
+        <img
+          src="/search.svg"
+          height={30}
+          width={30}
+          className="cursor-pointer"
+        />
       </header>
       <div className="flex justify-between py-6 mx-[8px] flex-col gap-3 pt-24 pb-20">
         {chats.map((chat, index) => (
           <div
             key={index}
-            className="flex justify-between py-2 text-slate-600 px-[14px] rounded-xl cursor-pointer hover:bg-primarycolor-300 active:bg-primarycolor-300 transition-all"
+            className={`flex justify-between py-2 text-slate-600 px-[14px] rounded-xl cursor-pointer hover:bg-primarycolor-300 active:bg-primarycolor-300 transition-all ${
+              activeChat ? "bg-primarycolor-300" : ""
+            }`}
             onClick={() => {
               const reciever = {
                 username: chat.username,
@@ -63,7 +69,6 @@ const chatsAll = ({ setActive }) => {
                 <span className="text-[16px] font-bold tracking-wide">
                   {chat.username}
                 </span>
-                {/* <span className="text-[14]">Hey there, how are you</span> */}
               </div>
             </div>
             <span className="text-[14px]">{chat?.sentAt}</span>

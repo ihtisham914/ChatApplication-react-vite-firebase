@@ -7,7 +7,8 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
 function App() {
-  const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
+  // const [isAuth, setIsAuth] = useState(cookies.get("auth-token"));
+  const [isAuth, setIsAuth] = useState(true);
   return (
     <>
       {!isAuth ? (

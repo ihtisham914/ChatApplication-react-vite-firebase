@@ -1,13 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { signInWithPopup, signOut } from "firebase/auth";
 import { db, auth, GoogleProvider } from "../src/firebase";
-import {
-  addDoc,
-  setDoc,
-  collection,
-  doc,
-  serverTimestamp,
-} from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
