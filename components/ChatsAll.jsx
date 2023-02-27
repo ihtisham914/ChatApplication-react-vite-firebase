@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { db, auth } from "../src/firebase";
-import {
-  addDoc,
-  collection,
-  serverTimestamp,
-  onSnapshot,
-  query,
-  where,
-} from "firebase/firestore";
+import { db } from "../src/firebase";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 const chatsAll = ({ setActive, activeChat }) => {
   const [chats, setChats] = useState([]);
@@ -22,13 +15,12 @@ const chatsAll = ({ setActive, activeChat }) => {
         chats.push({ ...doc.data(), id: doc.id });
       });
       setChats(chats);
-      console.log(chats);
     });
   }, []);
 
   return (
-    <div className="h-[100vh] w-[100%] sm:w-[25vw] md:w-[25vw] lg:w-[25vw] relative border-r-2 border-slate-500">
-      <header className="flex items-center justify-between px-6 bg-primarycolor-500 w-[100%] sm:w-[25vw] md:w-[25vw] lg:w-[25vw] h-[70px] rounded-b-3xl sm:rounded-none md:rounded-none lg:rounded-none sm:rounded-bl-3xl md:rounded-bl-3xl lg:rounded-bl-3xl fixed top-0 z-50 border-r-2 border-slate-500">
+    <div className="h-[100vh] w-[100%] sm:w-[25vw] md:w-[25vw] lg:w-[25vw] relative border-r-2 border-primarycolor-300">
+      <header className="flex items-center justify-between px-6 bg-primarycolor-500 w-[100%] sm:w-[25vw] md:w-[25vw] lg:w-[25vw] h-[70px] rounded-b-3xl sm:rounded-none md:rounded-none lg:rounded-none fixed top-0 z-50 border-r-2 border-primarycolor-400">
         <span className="text-white text-[24px] font-bold tracking-wider">
           Messages
         </span>
@@ -54,7 +46,6 @@ const chatsAll = ({ setActive, activeChat }) => {
               };
 
               localStorage.setItem("rec", JSON.stringify(reciever));
-              console.log(reciever);
               setActive(true);
             }}
           >
