@@ -22,7 +22,7 @@ const chatsAll = ({ setActive, activeChat }) => {
     <div className="h-[100vh] w-[100%] sm:w-[25vw] md:w-[25vw] lg:w-[25vw] relative border-r-2 border-primarycolor-300">
       <header className="flex items-center justify-between px-6 bg-primarycolor-500 w-[100%] sm:w-[25vw] md:w-[25vw] lg:w-[25vw] h-[70px] rounded-b-3xl sm:rounded-none md:rounded-none lg:rounded-none fixed top-0 z-50 border-r-2 border-primarycolor-400">
         <span className="text-white text-[24px] font-bold tracking-wider">
-          Messages
+          Chats
         </span>
         <img
           src="/search.svg"

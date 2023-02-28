@@ -9,6 +9,7 @@ import {
   orderBy,
   where,
 } from "firebase/firestore";
+// import useSound from "use-sound";
 
 const Chat = ({ setActive, activeChat }) => {
   const [msg, setMsg] = useState("");
@@ -16,10 +17,24 @@ const Chat = ({ setActive, activeChat }) => {
   const [messages, setMessages] = useState([]);
   const lastmsg = useRef();
 
+  // to create sounds on recieving and sending messages
+  // const [playActive] = useSound("/sounds/pop-down.mp3", { volume: 0.25 });
+  // const [playOn] = useSound("/sounds/pop-up-on.mp3", { volume: 0.25 });
+  // const [playOff] = useSound("/sounds/pop-up-off.mp3", { volume: 0.25 });
+
   const activeUser = JSON.parse(localStorage.getItem("key"));
   let reciever = JSON.parse(localStorage.getItem("rec"));
+  console.log(reciever.email);
 
   // messages.map((msg) => console.log(msg?.sentAt?.toDate()));
+
+  useEffect(() => {
+    setTimeout(() => {
+      lastmsg.current.scrollIntoView({
+        behavior: "auto",
+      });
+    });
+  }, [activeChat]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -44,6 +59,8 @@ const Chat = ({ setActive, activeChat }) => {
       setMessages(messages);
     });
   }, []);
+
+  console.log(messages);
 
   // sending message
   const sendMessage = async () => {
@@ -90,7 +107,7 @@ const Chat = ({ setActive, activeChat }) => {
           <>
             <div className="flex items-center gap-2">
               <img
-                className="inline-block sm:hidden md:hidden lg:hidden"
+                className="inline-block sm:hidden md:hidden lg:hidden cursor-pointer"
                 src="/back.svg"
                 width={20}
                 height={20}
@@ -98,14 +115,14 @@ const Chat = ({ setActive, activeChat }) => {
                 onClick={() => setActive(false)}
               />
               <img
-                src={reciever?.photoURL}
+                src={reciever.photoURL}
                 height={40}
                 width={40}
                 alt="userIcon"
                 className="rounded-full"
               />
               <h2 className="text-white text-[18px] font-bold tracking-wider">
-                {reciever?.username}
+                {reciever.username}
               </h2>
             </div>
             <img
@@ -122,55 +139,83 @@ const Chat = ({ setActive, activeChat }) => {
           </h3>
         )}
       </header>
-      <div className="h-[90vh] flex  gap-3 flex-col px-4 sm:px-6 md:px-6 lg:px-6 pt-20 pb-2 overflow-hidden overflow-y-scroll">
+      <div className="h-[90vh] flex gap-3 flex-col px-4 sm:px-6 md:px-6 lg:px-6 pt-20 pb-1 overflow-hidden overflow-y-scroll">
         {/* bg-[url('/bg-wallpaper.jpg')] bg-cover bg-center bg-no-repeat */}
-        {activeChat
-          ? messages.map((message, index) => (
-              <div
-                key={index}
-                className={`flex justify-between w-[100%] ${
-                  message.senderEmail !== activeUser.email
-                    ? "flex-row-reverse"
-                    : ""
-                } `}
-              >
-                <div className="w-auto"></div>
-                {message.senderEmail === activeUser.email ? (
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="bg-primarycolor-400 text-white text-[14px] px-[18px] py-2 rounded-2xl rounded-tr-none">
-                      {message.text}
+        {activeChat ? (
+          messages.map((message, index) => (
+            <>
+              {(message.senderEmail === activeUser.email ||
+                message.recieverEmail === activeUser.email) &&
+              (message.recieverEmail === reciever.email ||
+                message.senderEmail === reciever.email) ? (
+                <div
+                  key={index}
+                  className={`flex justify-between w-[100%] ${
+                    message.senderEmail !== activeUser.email
+                      ? "flex-row-reverse"
+                      : ""
+                  } `}
+                >
+                  <div className="w-auto"></div>
+                  {message.senderEmail === activeUser.email ? (
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="bg-primarycolor-400 text-white text-[14px] px-[18px] py-2 rounded-2xl rounded-tr-none">
+                        {message.text}
+                      </div>
+                      <img
+                        src={activeUser.photoURL}
+                        className="rounded-full"
+                        width={35}
+                        height={35}
+                        alt="img"
+                      />
                     </div>
-                    <img
-                      src={activeUser.photoURL}
-                      className="rounded-full"
-                      width={35}
-                      height={35}
-                      alt="img"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex items-start justify-between gap-2">
-                    <img
-                      className="rounded-full"
-                      src={reciever?.photoURL}
-                      width={35}
-                      height={35}
-                      alt="img"
-                    />
-                    <div className="bg-primarycolor-300  text-[14px] px-[18px] py-2 rounded-2xl rounded-tl-none">
-                      {message.text}
+                  ) : (
+                    <div className="flex items-start justify-between gap-2">
+                      <img
+                        className="rounded-full"
+                        src={reciever.photoURL}
+                        width={35}
+                        height={35}
+                        alt="img"
+                      />
+                      <div className="bg-primarycolor-300  text-[14px] px-[18px] py-2 rounded-2xl rounded-tl-none">
+                        {message.text}
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
-            ))
-          : ""}
+                  )}
+                </div>
+              ) : (
+                ""
+              )}
+            </>
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center gap-2 w-full h-full">
+            <span className="text-5xl text-primarycolor-500 font-bold">
+              Chatify
+            </span>
+            <p className="text-lg">
+              Greetings{" "}
+              <span className="text-green-500 font-bold">
+                {activeUser.username}
+              </span>
+            </p>
+            <p>Happy Chating...</p>
+            <p className="pt-32">
+              Desinged and Developed by{" "}
+              <span className="text-primarycolor-500 font-semibold">
+                Ihtisham Ul Haq
+              </span>
+            </p>
+          </div>
+        )}
         <div ref={lastmsg} />
       </div>
 
       {activeChat ? (
-        <div className="w-[100%] py-3 fixed bottom-0 z-50 bg-white">
-          <div className="flex items-center justify-between bg-primarycolor-300 rounded-xl mx-[22px] w-[90%] sm:w-[73vw] md:w-[73vw] lg:w-[73vw] px-[22px] py-3 ">
+        <div className="w-[100%] py-1 sm:py-3 md:py-3 lg:py-3 fixed bottom-[7px] z-50 bg-white">
+          <div className="flex items-center justify-between bg-primarycolor-300 rounded-xl mx-[10px] sm:mx-[22px] md:mx-[22px] lg:mx-[22px] w-[95%] sm:w-[73vw] md:w-[70vw] lg:w-[73vw] px-[12px] sm:px-[20px] md:px-[20px] lg:px-[20px] py-2 ">
             <input
               placeholder="message"
               type="text"
@@ -181,11 +226,11 @@ const Chat = ({ setActive, activeChat }) => {
               autoFocus
             />
             <div
-              className="flex items-center justify-center bg-primarycolor-400 p-2 rounded-lg"
+              className="flex items-center justify-center bg-primarycolor-400 p-1 rounded-lg"
               onClick={sendMessage}
             >
               <img
-                className="cursor-pointer text-white"
+                className="cursor-pointer text-white -ml-1"
                 src="/send.svg"
                 height={30}
                 width={30}
