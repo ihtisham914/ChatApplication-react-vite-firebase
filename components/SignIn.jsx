@@ -46,22 +46,34 @@ const SignIn = ({ setIsAuth }) => {
   return (
     <div className="flex items-center flex-col justify-center h-[100vh]">
       <h1 className="text-primarycolor-500 text-4xl font-bold">Chatify</h1>
-      <p className="text-lg mt-2">An instant webChating application</p>
+      <p className="text-lg mt-2">An instant WebChating application</p>
       <div className="h-[2px] bg-slate-300 w-80 mt-6 mb-4"></div>
       <span>SignIn with</span>
       <div className="flex items-center flex-col gap-2 mt-3">
         <div
+          title="LogIn with google"
           className="flex gap-2 items-center border-2 border-gray-400 px-4 py-2 rounded-3xl font-bold text-gray-700 hover:border-primarycolor-500 active:border-primarycolor-500 cursor-pointer"
           onClick={signInWithGoogle}
         >
           <img src="/google.png" height={28} width={28} alt="google logo" />
           <span>Continue with Google</span>
         </div>
-        <div className="flex gap-2 items-center border-2 border-gray-400 px-6 py-2 rounded-3xl font-bold text-gray-700 hover:border-primarycolor-500 active:border-primarycolor-500 cursor-pointer">
+        <div
+          title="This feature with come soon"
+          className="flex gap-2 items-center border-2 border-gray-400 px-6 py-2 rounded-3xl font-bold text-gray-700 hover:border-primarycolor-500 active:border-primarycolor-500 cursor-not-allowed"
+        >
           <img src="/apple.png" height={25} width={25} alt="apple logo" />
           <span>Continue with Apple</span>
         </div>
-        <p className="mt-6">Designed and Developed by Ihtisham Ul Haq</p>
+        <p className="mt-6">
+          Designed and Developed by{" "}
+          <a
+            href="https://github.com/ihtisham914"
+            className="text-primarycolor-500 underline cursor-pointer"
+          >
+            Ihtisham Ul Haq
+          </a>
+        </p>
         {/* <button
           type="submit"
           className="border-none bg-primarycolor-500 px-2 py-2 rounded-md text-white"

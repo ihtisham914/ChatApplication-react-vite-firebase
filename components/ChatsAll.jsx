@@ -20,7 +20,7 @@ const chatsAll = ({ setActive, activeChat }) => {
 
   return (
     <div className="h-[100vh] w-[100%] sm:w-[25vw] md:w-[25vw] lg:w-[25vw] relative border-r-2 border-primarycolor-300">
-      <header className="flex items-center justify-between px-6 bg-primarycolor-500 w-[100%] sm:w-[25vw] md:w-[25vw] lg:w-[25vw] h-[70px] rounded-b-3xl sm:rounded-none md:rounded-none lg:rounded-none fixed top-0 z-50 border-r-2 border-primarycolor-400">
+      <header className="flex items-center justify-between px-6 bg-primarycolor-500 w-[100%] sm:w-[25vw] md:w-[25vw] lg:w-[25vw] h-[70px] rounded-b-3xl sm:rounded-none md:rounded-none lg:rounded-none fixed top-0 z-30 border-r-2 border-primarycolor-400">
         <span className="text-white text-[24px] font-bold tracking-wider">
           Chats
         </span>
@@ -31,7 +31,7 @@ const chatsAll = ({ setActive, activeChat }) => {
           className="cursor-pointer"
         />
       </header>
-      <div className="flex justify-between py-6 mx-[8px] flex-col gap-3 pt-24 pb-20">
+      <div className="h-[100vh] flex py-6 pr-2 ml-[8px] flex-col gap-3 pt-24 pb-20 overflow-hidden overflow-y-scroll">
         {chats.map((chat, index) => (
           <div
             key={index}
@@ -46,6 +46,7 @@ const chatsAll = ({ setActive, activeChat }) => {
               };
 
               localStorage.setItem("rec", JSON.stringify(reciever));
+              setActive(false);
               setActive(true);
             }}
           >

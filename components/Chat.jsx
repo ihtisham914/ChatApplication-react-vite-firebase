@@ -45,12 +45,7 @@ const Chat = ({ setActive, activeChat }) => {
   }, [messages]);
   // console.log(reciever.email);
   useEffect(() => {
-    const queryMessages = query(
-      messagesRef,
-      // where("senderEmail", "==", activeUser.email),
-      // where("recieverEmail", "==", reciever.email),
-      orderBy("sentAt")
-    );
+    const queryMessages = query(messagesRef, orderBy("sentAt"));
     onSnapshot(queryMessages, (snapshot) => {
       let messages = [];
       snapshot.forEach((doc) => {
@@ -102,7 +97,7 @@ const Chat = ({ setActive, activeChat }) => {
 
   return (
     <div className="h-[100vh] w-[100%] sm:w-[75vw] md:w-[75vw] lg:w-[75vw] relative">
-      <header className="flex items-center justify-between px-4 sm:px-6 md:px-6 lg:px-6 bg-primarycolor-500 h-[70px] w-[100%] sm:w-[75vw] md:w-[75vw] lg:w-[75vw] rounded-b-3xl sm:rounded-none md:rounded-none lg:rounded-none fixed top-0 z-50">
+      <header className="flex items-center justify-between px-4 sm:px-6 md:px-6 lg:px-6 bg-primarycolor-500 h-[70px] w-[100%] sm:w-[75vw] md:w-[75vw] lg:w-[75vw] rounded-b-3xl sm:rounded-none md:rounded-none lg:rounded-none fixed top-0 z-30">
         {activeChat ? (
           <>
             <div className="flex items-center gap-2">
@@ -139,7 +134,7 @@ const Chat = ({ setActive, activeChat }) => {
           </h3>
         )}
       </header>
-      <div className="h-[90vh] flex gap-3 flex-col px-4 sm:px-6 md:px-6 lg:px-6 pt-20 pb-1 overflow-hidden overflow-y-scroll">
+      <div className="h-[90vh] flex gap-3 flex-col px-4 sm:px-6 md:px-6 lg:px-6 pt-20 overflow-hidden overflow-y-scroll">
         {/* bg-[url('/bg-wallpaper.jpg')] bg-cover bg-center bg-no-repeat */}
         {activeChat ? (
           messages.map((message, index) => (
@@ -192,21 +187,34 @@ const Chat = ({ setActive, activeChat }) => {
           ))
         ) : (
           <div className="flex flex-col items-center justify-center gap-2 w-full h-full">
-            <span className="text-5xl text-primarycolor-500 font-bold">
-              Chatify
-            </span>
-            <p className="text-lg">
+            <img
+              src={activeUser.photoURL}
+              className="rounded-full"
+              width={150}
+              height={150}
+              alt="img"
+            />
+            <p className="text-2xl">
               Greetings{" "}
               <span className="text-green-500 font-bold">
                 {activeUser.username}
               </span>
             </p>
-            <p>Happy Chating...</p>
+
+            <p className="flex items-center gap-4 text-2xl">
+              <span>Happy Chating with</span>
+              <span className="text-4xl text-primarycolor-500 font-bold">
+                Chatify
+              </span>
+            </p>
             <p className="pt-32">
               Desinged and Developed by{" "}
-              <span className="text-primarycolor-500 font-semibold">
+              <a
+                href="https://github.com/ihtisham914"
+                className="text-primarycolor-500 underline cursor-pointer"
+              >
                 Ihtisham Ul Haq
-              </span>
+              </a>
             </p>
           </div>
         )}
