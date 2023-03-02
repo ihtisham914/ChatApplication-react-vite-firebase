@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SignIn from "../components/SignIn";
-import ChatApp from "../components/chatApp";
+import ChatApp from "../components/ChatApp";
 import Cookies from "universal-cookie";
 import "../src/app.css";
 const cookies = new Cookies();
