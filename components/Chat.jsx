@@ -7,7 +7,6 @@ import {
   onSnapshot,
   query,
   orderBy,
-  where,
 } from "firebase/firestore";
 // import useSound from "use-sound";
 
@@ -24,9 +23,6 @@ const Chat = ({ setActive, activeChat }) => {
 
   const activeUser = JSON.parse(localStorage.getItem("key"));
   let reciever = JSON.parse(localStorage.getItem("rec"));
-  console.log(reciever.email);
-
-  // messages.map((msg) => console.log(msg?.sentAt?.toDate()));
 
   useEffect(() => {
     setTimeout(() => {
@@ -54,8 +50,6 @@ const Chat = ({ setActive, activeChat }) => {
       setMessages(messages);
     });
   }, []);
-
-  console.log(messages);
 
   // sending message
   const sendMessage = async () => {
@@ -194,7 +188,7 @@ const Chat = ({ setActive, activeChat }) => {
               height={150}
               alt="img"
             />
-            <p className="text-2xl">
+            <p className="text-2xl mt-2">
               Greetings{" "}
               <span className="text-green-500 font-bold">
                 {activeUser.username}
