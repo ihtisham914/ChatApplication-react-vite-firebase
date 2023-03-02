@@ -110,16 +110,20 @@ const Chat = ({ setActive, activeChat }) => {
                 alt="userIcon"
                 className="rounded-full"
               />
-              <h2 className="text-white text-[18px] font-bold tracking-wider">
-                {reciever.username}
-              </h2>
+              <div className="text-white">
+                <h2 className="text-[16px] font-bold tracking-wide">
+                  {reciever.username}
+                </h2>
+                <p className="text-[12px]">{reciever.email}</p>
+              </div>
             </div>
             <img
+              title="feature coming soon 🙂"
               src="/call.svg"
               height={30}
               width={30}
               alt="callIcon"
-              className="cursor-pointer"
+              className="cursor-not-allowed"
             />
           </>
         ) : (

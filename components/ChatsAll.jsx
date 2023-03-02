@@ -24,18 +24,12 @@ const chatsAll = ({ setActive, activeChat }) => {
   const searchHandler = async (e) => {
     setSearch(e.target.value);
     setSearchActive(true);
-    const filterChats = chats.filter(({ email }) =>
-      email.includes(e.target.value)
-    );
+    const filterChats = chats.filter(({ username }) => {
+      let user = username.charAt(0).toLowerCase() + username.slice(1);
+      return user.includes(e.target.value);
+    });
     setSearchChat(filterChats);
-    // console.log(filterChats);
-    //  here goes code for searching users on keydown /Enter/
-    // if (e.key === "Enter") {
-    //   console.log("search working");
-    // }
   };
-
-  console.log(searchChats);
 
   return (
     <div className="h-[100vh] w-[100%] sm:w-[25vw] md:w-[25vw] lg:w-[25vw] relative border-r-2 border-primarycolor-300">
@@ -46,20 +40,23 @@ const chatsAll = ({ setActive, activeChat }) => {
         <input
           type="text"
           title="Search users through email"
-          placeholder="Search email"
-          className="outline-none rounded-full bg-white w-[30%] focus:w-[60%] py-1 px-4 transition-all"
+          placeholder="🔎  Search User"
+          className="outline-none rounded-full bg-white w-[16%] sm:w-[16%] md:w-[19%] lg:[15%] focus:w-[60%] py-1 px-4 transition-all"
           onChange={(e) => searchHandler(e)}
           value={search}
-          // onKeyDown={(e) => searchHandler(e)}
         />
       </header>
-      <div className="h-[100vh] flex py-6 pr-2 ml-[8px] flex-col gap-3 pt-24 pb-20 overflow-hidden overflow-y-scrol">
+      <div className="h-[100vh] flex py-6 pr-2 ml-[8px] flex-col gap-3 pt-20 pb-20 overflow-hidden overflow-y-scrol">
         {searchActive ? (
           <>
             {searchChats.length === 0 ? (
-              <h1 className="text-center text-gray-400 font-bold">
-                User Not Found 🥲
-              </h1>
+              <div className="flex flex-col gap-1 justify-center items-center w-full">
+                <img src="/notfound.jpg" height={200} width={200} />
+                <h1 className="text-center text-gray-400 font-bold">
+                  User Not Found
+                </h1>
+                <p className="text-center text-gray-400">Try search again 🙂</p>
+              </div>
             ) : (
               <>
                 {searchChats.map((chat, index) => (

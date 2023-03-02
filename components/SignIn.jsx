@@ -23,6 +23,9 @@ const SignIn = ({ setIsAuth }) => {
       setIsAuth(true);
 
       // storing the user in firebase database
+
+      const queryUsers = query(userRef, where("email", "==", activeUser.email));
+      if (queryUsers) return;
       const newUser = {
         username: auth.currentUser.displayName,
         email: auth.currentUser.email,
@@ -36,13 +39,6 @@ const SignIn = ({ setIsAuth }) => {
     }
   };
 
-  const logOut = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error(error);
-    }
-  };
   return (
     <div className="flex items-center flex-col justify-center h-[100vh]">
       <h1 className="text-primarycolor-500 text-4xl font-bold">Chatify</h1>
@@ -74,13 +70,6 @@ const SignIn = ({ setIsAuth }) => {
             Ihtisham Ul Haq
           </a>
         </p>
-        {/* <button
-          type="submit"
-          className="border-none bg-primarycolor-500 px-2 py-2 rounded-md text-white"
-          onClick={logOut}
-        >
-          LogOut
-        </button> */}
       </div>
     </div>
   );
