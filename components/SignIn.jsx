@@ -1,5 +1,5 @@
-import React from "react";
-import { signInWithPopup, signOut } from "firebase/auth";
+import React, { useEffect, useState } from "react";
+import { signInWithPopup } from "firebase/auth";
 import { db, auth, GoogleProvider } from "../src/firebase";
 import { addDoc, collection } from "firebase/firestore";
 
@@ -8,6 +8,7 @@ const cookies = new Cookies();
 
 const SignIn = ({ setIsAuth }) => {
   const userRef = collection(db, "users");
+
   const signInWithGoogle = async () => {
     try {
       // sign in with google
@@ -23,14 +24,10 @@ const SignIn = ({ setIsAuth }) => {
       setIsAuth(true);
 
       // storing the user in firebase database
-
-      const queryUsers = query(userRef, where("email", "==", activeUser.email));
-      if (queryUsers) return;
       const newUser = {
         username: auth.currentUser.displayName,
         email: auth.currentUser.email,
         photoURL: auth.currentUser.photoURL,
-        // lastSignedIn: serverTimestamp,
       };
 
       await addDoc(userRef, newUser);
@@ -41,6 +38,7 @@ const SignIn = ({ setIsAuth }) => {
 
   return (
     <div className="flex items-center flex-col justify-center h-[100vh]">
+      <img src="/chat.png" alt="Chatify logo" height={120} width={120} />
       <h1 className="text-primarycolor-500 text-4xl font-bold">Chatify</h1>
       <p className="text-lg mt-2">An instant WebChating application</p>
       <div className="h-[2px] bg-slate-300 w-80 mt-6 mb-4"></div>

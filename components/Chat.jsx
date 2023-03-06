@@ -14,12 +14,8 @@ const Chat = ({ setActive, activeChat }) => {
   const [msg, setMsg] = useState("");
   const messagesRef = collection(db, "messages");
   const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState();
   const lastmsg = useRef();
-
-  // to create sounds on recieving and sending messages
-  // const [playActive] = useSound("/sounds/pop-down.mp3", { volume: 0.25 });
-  // const [playOn] = useSound("/sounds/pop-up-on.mp3", { volume: 0.25 });
-  // const [playOff] = useSound("/sounds/pop-up-off.mp3", { volume: 0.25 });
 
   const activeUser = JSON.parse(localStorage.getItem("key"));
   let reciever = JSON.parse(localStorage.getItem("rec"));
@@ -41,12 +37,14 @@ const Chat = ({ setActive, activeChat }) => {
   }, [messages]);
   // console.log(reciever.email);
   useEffect(() => {
+    setIsLoading(true);
     const queryMessages = query(messagesRef, orderBy("sentAt"));
     onSnapshot(queryMessages, (snapshot) => {
       let messages = [];
       snapshot.forEach((doc) => {
         messages.push({ ...doc.data(), id: doc.id });
       });
+      setIsLoading(false);
       setMessages(messages);
     });
   }, []);
@@ -134,7 +132,7 @@ const Chat = ({ setActive, activeChat }) => {
       </header>
       <div className="h-[90vh] flex gap-3 flex-col px-4 sm:px-6 md:px-6 lg:px-6 pt-20 overflow-hidden overflow-y-scroll">
         {/* bg-[url('/bg-wallpaper.jpg')] bg-cover bg-center bg-no-repeat */}
-        {activeChat ? (
+        {activeChat && !isLoading ? (
           messages.map((message, index) => (
             <>
               {(message.senderEmail === activeUser.email ||
@@ -179,7 +177,7 @@ const Chat = ({ setActive, activeChat }) => {
                   )}
                 </div>
               ) : (
-                ""
+                <div className="text-3xl text-red-500">Loading....</div>
               )}
             </>
           ))

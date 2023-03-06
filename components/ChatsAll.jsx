@@ -8,6 +8,8 @@ const chatsAll = ({ setActive, activeChat }) => {
   const [search, setSearch] = useState("");
   const [searchActive, setSearchActive] = useState(false);
   const [searchChats, setSearchChat] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const activeUser = JSON.parse(localStorage.getItem("key"));
 
   useEffect(() => {
@@ -17,6 +19,7 @@ const chatsAll = ({ setActive, activeChat }) => {
       snapshot.forEach((doc) => {
         chats.push({ ...doc.data(), id: doc.id });
       });
+      setIsLoading(false);
       setChats(chats);
     });
   }, []);
@@ -98,40 +101,48 @@ const chatsAll = ({ setActive, activeChat }) => {
           </>
         ) : (
           <>
-            {chats.map((chat, index) => (
-              <div
-                key={index}
-                className={`flex justify-between py-2 text-slate-600 px-[14px] rounded-xl cursor-pointer hover:bg-primarycolor-300 active:bg-primarycolor-300 transition-all ${
-                  activeChat ? "bg-primarycolor-300" : ""
-                }`}
-                onClick={() => {
-                  const reciever = {
-                    username: chat.username,
-                    email: chat.email,
-                    photoURL: chat.photoURL,
-                  };
-
-                  localStorage.setItem("rec", JSON.stringify(reciever));
-                  setActive(false);
-                  setActive(true);
-                }}
-              >
-                <div className="flex items-center justify-center gap-3">
-                  <img
-                    src={chat.photoURL}
-                    width={50}
-                    height={50}
-                    className="rounded-full"
-                  />
-                  <div className="flex flex-col ">
-                    <span className="text-[16px] font-bold tracking-wide">
-                      {chat.username}
-                    </span>
-                  </div>
-                </div>
-                {/* <span className="text-[14px]">{chat?.sentAt}</span> */}
+            {isLoading ? (
+              <div className="flex items-center justify-center h-full animate-spin">
+                <img src="/loading.png" height={100} width={100} alt="" />
               </div>
-            ))}
+            ) : (
+              <>
+                {chats.map((chat, index) => (
+                  <div
+                    key={index}
+                    className={`flex justify-between py-2 text-slate-600 px-[14px] rounded-xl cursor-pointer hover:bg-primarycolor-300 active:bg-primarycolor-300 transition-all ${
+                      activeChat ? "bg-primarycolor-300" : ""
+                    }`}
+                    onClick={() => {
+                      const reciever = {
+                        username: chat.username,
+                        email: chat.email,
+                        photoURL: chat.photoURL,
+                      };
+
+                      localStorage.setItem("rec", JSON.stringify(reciever));
+                      setActive(false);
+                      setActive(true);
+                    }}
+                  >
+                    <div className="flex items-center justify-center gap-3">
+                      <img
+                        src={chat.photoURL}
+                        width={50}
+                        height={50}
+                        className="rounded-full"
+                      />
+                      <div className="flex flex-col ">
+                        <span className="text-[16px] font-bold tracking-wide">
+                          {chat.username}
+                        </span>
+                      </div>
+                    </div>
+                    {/* <span className="text-[14px]">{chat?.sentAt}</span> */}
+                  </div>
+                ))}
+              </>
+            )}
           </>
         )}
       </div>
