@@ -20,7 +20,12 @@ const chatsAll = ({ setActive, activeChat }) => {
         chats.push({ ...doc.data(), id: doc.id });
       });
       setIsLoading(false);
-      setChats(chats);
+
+      // removing the duplicate users
+      const res = chats.filter((chat, index) => {
+        return index === chats.findIndex((obj) => chat.email === obj.email);
+      });
+      setChats(res);
     });
   }, []);
 

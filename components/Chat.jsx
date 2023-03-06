@@ -14,7 +14,6 @@ const Chat = ({ setActive, activeChat }) => {
   const [msg, setMsg] = useState("");
   const messagesRef = collection(db, "messages");
   const [messages, setMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState();
   const lastmsg = useRef();
 
   const activeUser = JSON.parse(localStorage.getItem("key"));
@@ -37,14 +36,12 @@ const Chat = ({ setActive, activeChat }) => {
   }, [messages]);
   // console.log(reciever.email);
   useEffect(() => {
-    setIsLoading(true);
     const queryMessages = query(messagesRef, orderBy("sentAt"));
     onSnapshot(queryMessages, (snapshot) => {
       let messages = [];
       snapshot.forEach((doc) => {
         messages.push({ ...doc.data(), id: doc.id });
       });
-      setIsLoading(false);
       setMessages(messages);
     });
   }, []);
@@ -132,7 +129,7 @@ const Chat = ({ setActive, activeChat }) => {
       </header>
       <div className="h-[90vh] flex gap-3 flex-col px-4 sm:px-6 md:px-6 lg:px-6 pt-20 overflow-hidden overflow-y-scroll">
         {/* bg-[url('/bg-wallpaper.jpg')] bg-cover bg-center bg-no-repeat */}
-        {activeChat && !isLoading ? (
+        {activeChat ? (
           messages.map((message, index) => (
             <>
               {(message.senderEmail === activeUser.email ||
@@ -177,7 +174,7 @@ const Chat = ({ setActive, activeChat }) => {
                   )}
                 </div>
               ) : (
-                <div className="text-3xl text-red-500">Loading....</div>
+                ""
               )}
             </>
           ))
