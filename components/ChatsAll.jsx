@@ -55,7 +55,7 @@ const chatsAll = ({ setActive, activeChat }) => {
           value={search}
         />
       </header>
-      <div className="h-[100vh] flex py-6 pr-2 ml-[8px] flex-col gap-3 pt-20 pb-20 overflow-hidden overflow-y-scrol">
+      <div className="h-[100vh]  flex py-6 pr-2 ml-[8px] flex-col gap-3 pt-20 pb-20 overflow-y-scroll">
         {searchActive ? (
           <>
             {searchChats.length === 0 ? (
@@ -116,7 +116,7 @@ const chatsAll = ({ setActive, activeChat }) => {
                 {chats.map((chat, index) => (
                   <div
                     key={index}
-                    className={`flex justify-between py-2 text-slate-600 px-[14px] rounded-xl cursor-pointer hover:bg-primarycolor-300 active:bg-primarycolor-300 transition-all ${
+                    className={`flex justify-between py-2 text-slate-600 px-[14px] rounded-xl cursor-pointer hover:bg-primarycolor-200 active:bg-primarycolor-300 transition-all ${
                       activeIndex === index ? "bg-primarycolor-300" : ""
                     }`}
                     onClick={() => {

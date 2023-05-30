@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { AiOutlineClockCircle } from "react-icons/ai";
 import { db } from "../src/firebase";
 import {
   addDoc,
@@ -153,8 +154,14 @@ const Chat = ({ setActive, activeChat }) => {
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex flex-col bg-primarycolor-400 text-white text-[14px] px-[18px] py-2 rounded-2xl rounded-tr-none">
                         <span>{message.text}</span>
-                        <span className="text-left text-[10px]">
-                          {message?.sentAt?.toDate().toLocaleTimeString()}
+                        <span className="text-right text-[10px]">
+                          {message?.sentAt ? (
+                            <>{message.sentAt.toDate().toLocaleTimeString()}</>
+                          ) : (
+                            <span className="flex items-center gap-1 justify-end">
+                              <AiOutlineClockCircle /> sending...
+                            </span>
+                          )}
                         </span>
                       </div>
                       <img
