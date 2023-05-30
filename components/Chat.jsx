@@ -62,7 +62,7 @@ const Chat = ({ setActive, activeChat }) => {
     setMsg("");
     await addDoc(messagesRef, newMsg);
     setTimeout(() => {
-      lastmsg.current.scrollIntoView({
+      lastmsg?.current.scrollIntoView({
         behavior: "smooth",
       });
     });
@@ -81,7 +81,7 @@ const Chat = ({ setActive, activeChat }) => {
       setMsg("");
       await addDoc(messagesRef, newMsg);
       setTimeout(() => {
-        lastmsg.current.scrollIntoView({
+        lastmsg?.current.scrollIntoView({
           behavior: "smooth",
         });
       });
@@ -151,8 +151,11 @@ const Chat = ({ setActive, activeChat }) => {
                   <div className="w-auto"></div>
                   {message.senderEmail === activeUser.email ? (
                     <div className="flex items-start justify-between gap-2">
-                      <div className="bg-primarycolor-400 text-white text-[14px] px-[18px] py-2 rounded-2xl rounded-tr-none">
-                        {message.text}
+                      <div className="flex flex-col bg-primarycolor-400 text-white text-[14px] px-[18px] py-2 rounded-2xl rounded-tr-none">
+                        <span>{message.text}</span>
+                        <span className="text-left text-[10px]">
+                          {message?.sentAt?.toDate().toLocaleTimeString()}
+                        </span>
                       </div>
                       <img
                         src={activeUser.photoURL}
@@ -171,8 +174,11 @@ const Chat = ({ setActive, activeChat }) => {
                         height={35}
                         alt="img"
                       />
-                      <div className="bg-primarycolor-300  text-[14px] px-[18px] py-2 rounded-2xl rounded-tl-none">
-                        {message.text}
+                      <div className="flex flex-col bg-primarycolor-300  text-[14px] px-[18px] py-2 rounded-2xl rounded-tl-none">
+                        <span>{message.text}</span>
+                        <span className="text-right text-[10px]">
+                          {message.sentAt.toDate().toLocaleTimeString()}
+                        </span>
                       </div>
                     </div>
                   )}
