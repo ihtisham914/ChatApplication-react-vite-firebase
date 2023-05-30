@@ -9,6 +9,7 @@ const chatsAll = ({ setActive, activeChat }) => {
   const [searchActive, setSearchActive] = useState(false);
   const [searchChats, setSearchChat] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeIndex, setActiveIndex] = useState();
 
   const activeUser = JSON.parse(localStorage.getItem("key"));
 
@@ -49,7 +50,7 @@ const chatsAll = ({ setActive, activeChat }) => {
           type="text"
           title="Search users through email"
           placeholder="🔎  Search User"
-          className="outline-none rounded-full bg-white w-[16%] sm:w-[16%] md:w-[19%] lg:[15%] focus:w-[60%] py-1 px-4 transition-all"
+          className="outline-none rounded-full bg-white w-[16%] sm:w-[16%] md:w-[19%] lg:[15%] focus:w-[60%] py-2 px-4 transition-all"
           onChange={(e) => searchHandler(e)}
           value={search}
         />
@@ -71,7 +72,7 @@ const chatsAll = ({ setActive, activeChat }) => {
                   <div
                     key={index}
                     className={`flex justify-between py-2 text-slate-600 px-[14px] rounded-xl cursor-pointer hover:bg-primarycolor-300 active:bg-primarycolor-300 transition-all ${
-                      activeChat ? "bg-primarycolor-300" : ""
+                      index === activeIndex ? "bg-primarycolor-300" : ""
                     }`}
                     onClick={() => {
                       const reciever = {
@@ -107,8 +108,8 @@ const chatsAll = ({ setActive, activeChat }) => {
         ) : (
           <>
             {isLoading ? (
-              <div className="flex items-center justify-center h-full animate-spin">
-                <img src="/loading.png" height={100} width={100} alt="" />
+              <div className="flex items-center justify-center h-full animate-spin duration-200">
+                <img src="/loading.png" height={40} width={40} alt="" />
               </div>
             ) : (
               <>
@@ -116,7 +117,7 @@ const chatsAll = ({ setActive, activeChat }) => {
                   <div
                     key={index}
                     className={`flex justify-between py-2 text-slate-600 px-[14px] rounded-xl cursor-pointer hover:bg-primarycolor-300 active:bg-primarycolor-300 transition-all ${
-                      activeChat ? "bg-primarycolor-300" : ""
+                      activeIndex === index ? "bg-primarycolor-300" : ""
                     }`}
                     onClick={() => {
                       const reciever = {
@@ -126,6 +127,8 @@ const chatsAll = ({ setActive, activeChat }) => {
                       };
 
                       localStorage.setItem("rec", JSON.stringify(reciever));
+                      setActiveIndex(index);
+
                       setActive(false);
                       setActive(true);
                     }}

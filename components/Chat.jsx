@@ -14,15 +14,19 @@ const Chat = ({ setActive, activeChat }) => {
   const [msg, setMsg] = useState("");
   const messagesRef = collection(db, "messages");
   const [messages, setMessages] = useState([]);
+  const [reciever, setReciever] = useState({});
   const lastmsg = useRef();
 
   const activeUser = JSON.parse(localStorage.getItem("key"));
-  let reciever = JSON.parse(localStorage.getItem("rec"));
+
+  useEffect(() => {
+    setReciever(JSON.parse(localStorage.getItem("rec")));
+  }, [reciever]);
 
   useEffect(() => {
     setTimeout(() => {
       lastmsg.current.scrollIntoView({
-        behavior: "auto",
+        behavior: "smooth",
       });
     });
   }, [activeChat]);

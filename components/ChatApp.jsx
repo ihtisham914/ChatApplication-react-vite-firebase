@@ -78,7 +78,7 @@ const ChatApp = () => {
               {accounts.map((acc, index) => (
                 <div
                   key={index}
-                  className="flex flex-col gap-1 items-center justify-center"
+                  className="flex flex-col gap-1 items-center justify-center cursor-pointer"
                 >
                   <img
                     src={acc.logo}
