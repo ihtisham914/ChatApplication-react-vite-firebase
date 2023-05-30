@@ -132,7 +132,7 @@ const Chat = ({ setActive, activeChat }) => {
           </h3>
         )}
       </header>
-      <div className="h-[90vh] flex gap-3 flex-col px-4 sm:px-6 md:px-6 lg:px-6 pt-20 overflow-hidden overflow-y-scroll">
+      <div className="h-auto sm:h-[90vh] md:h-[90vh] lg:h-[90vh] flex gap-3 flex-col px-4 sm:px-6 md:px-6 lg:px-6 pt-20 overflow-hidden overflow-y-scroll">
         {/* bg-[url('/bg-wallpaper.jpg')] bg-cover bg-center bg-no-repeat */}
         {activeChat ? (
           messages.map((message, index) => (
