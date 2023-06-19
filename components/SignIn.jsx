@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { signInWithPopup } from "firebase/auth";
 import { db, auth, GoogleProvider } from "../src/firebase";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDoc, doc, query } from "firebase/firestore";
 
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
@@ -23,14 +23,28 @@ const SignIn = ({ setIsAuth }) => {
       localStorage.setItem("key", JSON.stringify(activeUser));
       setIsAuth(true);
 
-      // storing the user in firebase database
-      const newUser = {
-        username: auth.currentUser.displayName,
-        email: auth.currentUser.email,
-        photoURL: auth.currentUser.photoURL,
-      };
+      console.log(activeUser.email);
+      console.log(typeof activeUser.email);
 
-      await addDoc(userRef, newUser);
+      const docRef = doc(db, "users", activeUser.email);
+
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        console.log("User Exists", "Document data:", docSnap.data());
+      } else {
+        // docSnap.data() will be undefined in this case
+        console.log("Added new User");
+        const newUser = {
+          username: auth.currentUser.displayName,
+          email: auth.currentUser.email,
+          photoURL: auth.currentUser.photoURL,
+        };
+
+        await addDoc(userRef, newUser);
+      }
+
+      // storing the user in firebase database
     } catch (error) {
       console.error(error);
     }

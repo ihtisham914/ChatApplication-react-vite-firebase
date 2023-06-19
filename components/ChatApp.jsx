@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Chat from "./Chat";
 import ChatsAll from "./ChatsAll";
 import dev from "../appData/developer";
+import Notification from "./Notification";
 
 const ChatApp = () => {
   const [activeChat, setActive] = useState(false);

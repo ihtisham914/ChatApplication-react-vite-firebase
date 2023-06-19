@@ -3,6 +3,8 @@ import SignIn from "../components/SignIn";
 import ChatApp from "../components/ChatApp";
 import Cookies from "universal-cookie";
 import "../src/app.css";
+import Notification from "../components/Notification";
+
 const cookies = new Cookies();
 
 function App() {
@@ -10,6 +12,7 @@ function App() {
   // const [isAuth, setIsAuth] = useState(true);
   return (
     <>
+      <Notification />
       {!isAuth ? (
         <SignIn setIsAuth={setIsAuth} />
       ) : (

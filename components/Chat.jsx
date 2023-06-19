@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineClockCircle } from "react-icons/ai";
+import { MdDelete } from "react-icons/md";
 import { db } from "../src/firebase";
 import {
   addDoc,
@@ -8,7 +9,10 @@ import {
   onSnapshot,
   query,
   orderBy,
+  deleteDoc,
+  doc,
 } from "firebase/firestore";
+import toast from "react-hot-toast";
 // import useSound from "use-sound";
 
 const Chat = ({ setActive, activeChat }) => {
@@ -63,7 +67,7 @@ const Chat = ({ setActive, activeChat }) => {
     setMsg("");
     await addDoc(messagesRef, newMsg);
     setTimeout(() => {
-      lastmsg?.current.scrollIntoView({
+      lastmsg?.current?.scrollIntoView({
         behavior: "smooth",
       });
     });
@@ -82,11 +86,23 @@ const Chat = ({ setActive, activeChat }) => {
       setMsg("");
       await addDoc(messagesRef, newMsg);
       setTimeout(() => {
-        lastmsg?.current.scrollIntoView({
+        lastmsg?.current?.scrollIntoView({
           behavior: "smooth",
         });
       });
     }
+  };
+
+  // DELETE MESSAGE
+  const DeleteMsg = async (id) => {
+    console.log(id);
+    // here goes the code for deletion of message
+    const docRef = doc(db, "messages", id);
+    deleteDoc(docRef).then(() =>
+      toast.success("Message Deleted", {
+        style: { width: "auto", height: "auto" },
+      })
+    );
   };
 
   return (
@@ -152,17 +168,25 @@ const Chat = ({ setActive, activeChat }) => {
                   <div className="w-auto"></div>
                   {message.senderEmail === activeUser.email ? (
                     <div className="flex items-start justify-between gap-2">
-                      <div className="flex flex-col bg-primarycolor-400 text-white text-[14px] px-[18px] py-2 rounded-2xl rounded-tr-none">
+                      <div className="relative flex flex-col bg-primarycolor-400 text-white text-[14px] px-[18px] py-2 rounded-2xl rounded-tr-none max-w-[63vw]">
                         <span>{message.text}</span>
                         <span className="text-right text-[10px]">
                           {message?.sentAt ? (
                             <>{message.sentAt.toDate().toLocaleTimeString()}</>
                           ) : (
                             <span className="flex items-center gap-1 justify-end">
-                              <AiOutlineClockCircle /> sending...
+                              <AiOutlineClockCircle /> sending
                             </span>
                           )}
                         </span>
+                        {message?.sentAt && (
+                          <span
+                            onClick={() => DeleteMsg(message.id)}
+                            className="absolute -left-8 p-1 rounded-full border border-red-500 text-red-500 z-20 hover:text-white hover:bg-red-500"
+                          >
+                            <MdDelete />
+                          </span>
+                        )}
                       </div>
                       <img
                         src={activeUser.photoURL}
