@@ -27,5 +27,8 @@
     "universal": "^0.1.1",
     "universal-cookie": "^4.0.4",
     "use-sound": "^4.0.1"
+  },
+  "devDependencies": {
+    "encoding": "^0.1.13"
   }
 }
