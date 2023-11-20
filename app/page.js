@@ -19,7 +19,6 @@ export default function Home() {
   const navigate = useRouter();
   const ActiveUser = useSelector((state) => state.User.ActiveUser);
   const ChatActive = useSelector((state) => state.User.ChatActive);
-  console.log(ActiveUser);
 
   if (!ActiveUser.email) navigate.push("/Auth");
   return <>{ActiveUser.email && <HomeScreen />}</>;
